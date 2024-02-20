@@ -1,0 +1,28 @@
+archives :
+
+- fichier cbz (.zip) :
+    archive .zip contenant contenant les pages sous forme d'images (GIF, JPEG, PNG, BMP, etc.)
+
+- fichier cbr (.rar):
+    pareil en .rar
+
+- fichier cb7 (.7z) :
+    pareil en .7z (à voir plus tard)
+
+- fichier cbt (.tar) :
+    pareil en .tar (à voir plus tard)
+
+images :
+
+- format jpeg (.jpg) :
+    prend en charge les couleurs 24 bits, compression avec perte (perte de netteté mais gain d'espace),
+    stocke les métadonnées (lieu, date,...)
+
+- format bitmap (.bmp) :
+    données non compressées (donc pas de pertes de qualité mais perte d'espace), images seulement en RGB (pas de cyan magenta...)
+    fichier en 3 parties : en-tête (données relatives au fichier), palette de couleurs, données relatives à l'images
+    https://fr.wikipedia.org/wiki/Windows_bitmap
+
+- format PNG (.png) :
+    compression sans perte, fichier volumineux (ralentit le chargement des pages)
+    https://fr.wikipedia.org/wiki/Portable_Network_Graphics

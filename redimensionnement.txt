@@ -1,0 +1,10 @@
+Seam Carving :
+on enlève les pixels pas importants (faible contraste avec les voisins)
+http://igm.univ-mlv.fr/~dr/XPOSE2012/La%20programmation%20dynamique/seamcarving.html
+
+sous-échantillonnage :
+on enlève une colonne et une ligne sur 2 (risque d'aliasing), il faut appliquer un filtre passe-bas
+
+pour agrandir (normalement pas utile) :
+par interpolation bilinéaire
+https://fr.wikipedia.org/wiki/Interpolation_bilin%C3%A9aire
