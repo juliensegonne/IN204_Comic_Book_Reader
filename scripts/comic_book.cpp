@@ -1,27 +1,25 @@
 #include "comic_book.hpp"
 #include <fstream>
 #include <stdexcept>
+#include <boost/filesystem.hpp>
 
-// Construceur de Image
+namespace fs = std::filesystem;
+
 Image::Image(const std::string& nomFichier) : nomFichier(nomFichier) {
     ChargerFichier(nomFichier);
 }
 
-// Classe image
 void Image::ChargerFichier(const std::string& nomFichier) {
-    // Ouvre le fichier image en mode binaire
     std::ifstream file(nomFichier, std::ios::binary);
     if (!file.is_open()) {
         throw std::runtime_error("Impossible de charger l'image.");
     }
 
-    // Stocke le contenu de file dans data
     data.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 
-    // Détermine le format de l'image
-    size_t pos = nomFichier.find_last_of('.');// Position du dernier point dans le nom du fichier
+    size_t pos = nomFichier.find_last_of('.');
     if (pos != std::string::npos) {
-        std::string extension = nomFichier.substr(pos + 1);// Extension désigne la partie après le point
+        std::string extension = nomFichier.substr(pos + 1);
         if (extension == "jpg" || extension == "jpeg") {
             format = FormatImage::JPG;
         } else if (extension == "png") {
@@ -44,17 +42,20 @@ FormatImage Image::ObtenirFormat() const {
     return format;
 }
 
-// Classe Page
-void Page::AjouterImage(const Image& image) {
-    images.push_back(image);
+void Page::AjouterImage(const Image& image) const {
+    const_cast<std::vector<Image>&>(images).push_back(image);
 }
 
 const std::vector<Image>& Page::ObtenirImages() const {
     return images;
 }
 
+Book::Book(TypeArchive typeArch, int imagesParPage)
+    : typeArch(typeArch), imagesParPage(imagesParPage) {}
 
-Book::Book(TypeArchive typeArch) : typeArch(typeArch) {}
+int Book::ObtenirImagesParPage() const { 
+    return imagesParPage; 
+}
 
 void Book::AjouterPage(const Page& page) {
     pages.push_back(page);

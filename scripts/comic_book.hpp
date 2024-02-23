@@ -40,7 +40,7 @@ private:
     std::vector<Image> images;
 
 public:
-    void AjouterImage(const Image& image);
+    void AjouterImage(const Image& image) const;
     const std::vector<Image>& ObtenirImages() const;
 };
 
@@ -49,9 +49,11 @@ class Book {
 private:
     std::vector<Page> pages;
     TypeArchive typeArch;
+    int imagesParPage;
 
 public:
-    Book(TypeArchive typeArch);
+    Book(TypeArchive typeArch,int imagesParPage);
+    int ObtenirImagesParPage() const;
     void AjouterPage(const Page& page);
     const std::vector<Page>& ObtenirPages() const;
     TypeArchive ObtenirTypeArchive() const;
