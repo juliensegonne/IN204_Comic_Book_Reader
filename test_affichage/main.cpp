@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QLabel>
 #include <QKeyEvent>
+#include <QScreen>
+#include <QDesktopWidget>
 #include <Magick++.h>
 #include <string>
 
@@ -19,7 +21,8 @@ protected:
     }
 };
 
-
+//permet de coller 2 images côte à côte pour former une double-page (le principe pourra servir plus tard à
+//coller les images pour former une page)
 int association(Magick::Image image1, Magick::Image image2, const std::string& sortie){
     
     int width1 = image1.columns();
@@ -51,15 +54,20 @@ int association(Magick::Image image1, Magick::Image image2, const std::string& s
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
+    QSize screenSize = qApp->primaryScreen()->geometry().size();
+    int screenWidth = screenSize.width(); // Largeur de l'écran
+    int screenHeight = screenSize.height(); // Hauteur de l'écran
+
     Magick::InitializeMagick(*argv);
-    
+
     Magick::Image img1("ApacheTrail_n1_p01.jpg");
     Magick::Image img2("ApacheTrail_n1_p02gs.jpg");
-    association(img1,img2,"sortie");
+    
+    association(img1,img2,"sortie");  //peut-être il faut la modifier pour prendre en argument la taille de l'écran
 
     Magick::Image double_page("sortie.jpg");
     
-    double_page.scale("2970x810");
+    double_page.scale(std::to_string(screenWidth)+"x"+std::to_string(screenHeight));
     double_page.write("result.jpg");
 
     // Charger l'image
@@ -68,6 +76,8 @@ int main(int argc, char *argv[]) {
     // Créer un QLabel pour afficher l'image
     FullScreenLabel label;
     label.setPixmap(image);
+    label.setFixedSize(screenSize);
+    label.setAlignment(Qt::AlignCenter);
 
     // Affichage fenêtre
     label.showFullScreen();

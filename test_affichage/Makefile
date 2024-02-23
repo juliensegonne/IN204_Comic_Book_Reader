@@ -317,6 +317,9 @@ distdir: FORCE
 
 clean: compiler_clean 
 	-$(DEL_FILE) $(OBJECTS)
+	-$(DEL_FILE) result.jpg
+	-$(DEL_FILE) sortie.jpg
+	-$(DEL_FILE) image
 	-$(DEL_FILE) *~ core *.core
 
 
