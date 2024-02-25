@@ -6,10 +6,11 @@ TARGET = image
 
 # Fichiers sources de votre application
 SOURCES += main.cpp \
-           comic_book.cpp
+           comic_book.cpp \
+           affichage.cpp
 
 # Headers de votre application
-HEADERS += comic_book.hpp
+HEADERS += comic_book.hpp affichage.hpp
 
 LIBS += -lMagick++ -lboost_filesystem
 
