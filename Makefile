@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = image1.0.0
-DISTDIR = /home/bam/IN204_Comic_Book_Reader/.tmp/image1.0.0
+DISTDIR = /home/juliensegonne/IN204_Comic_Book_Reader/.tmp/image1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) -lMagick++ -lboost_filesystem /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
@@ -329,6 +329,8 @@ distdir: FORCE
 
 clean: compiler_clean 
 	-$(DEL_FILE) $(OBJECTS)
+	-$(DEL_FILE) result.jpg
+	-$(DEL_FILE) sortie.jpg
 	-$(DEL_FILE) *~ core *.core
 
 
@@ -363,7 +365,7 @@ moc_affichage.cpp: scripts/affichage.hpp \
 		scripts/comic_book.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/bam/IN204_Comic_Book_Reader/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/bam/IN204_Comic_Book_Reader/scripts -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include scripts/affichage.hpp -o moc_affichage.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/juliensegonne/IN204_Comic_Book_Reader/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/juliensegonne/IN204_Comic_Book_Reader/scripts -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include scripts/affichage.hpp -o moc_affichage.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:

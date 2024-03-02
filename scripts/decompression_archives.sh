@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd ..
 cd archives 
 mkdir extractions #contiendra tous les fichiers extraits des archives
 

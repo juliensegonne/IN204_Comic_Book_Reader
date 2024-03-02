@@ -8,3 +8,19 @@ on enlève une colonne et une ligne sur 2 (risque d'aliasing), il faut appliquer
 pour agrandir (normalement pas utile) :
 par interpolation bilinéaire
 https://fr.wikipedia.org/wiki/Interpolation_bilin%C3%A9aire
+
+
+filtre pour atténuer l'aliasing :
+
+    Filtre de moyenne (Average filter) : Ce filtre calcule la moyenne des valeurs des pixels voisins. Il est simple à mettre en œuvre et produit des résultats acceptables pour une grande variété d'images, mais il peut entraîner une perte de netteté des contours.
+
+    Filtre de Gauss (Gaussian filter) : Ce filtre applique un noyau de convolution basé sur une distribution gaussienne pour atténuer les hautes fréquences spatiales. Il produit généralement des résultats plus esthétiques que le filtre de moyenne et est souvent utilisé lorsque la qualité visuelle est critique.
+
+    Filtre de Lanczos (Lanczos filter) : Ce filtre utilise une fonction de fenêtrage de type sinc pour interpoler les valeurs des pixels. Il est particulièrement efficace pour les images contenant des détails fins ou des contours nets, mais peut introduire des artefacts lorsqu'il est utilisé de manière excessive.
+
+    Filtre de Catmull-Rom (Catmull-Rom filter) : Ce filtre utilise une interpolation bicubique pour ajuster les valeurs des pixels. Il est souvent utilisé pour les images contenant des lignes droites ou des formes géométriques, car il préserve bien les contours.
+
+    Filtre de Mitchell-Netravali (Mitchell-Netravali filter) : Ce filtre est une combinaison linéaire de deux fonctions polynomiales et est conçu pour minimiser l'aliasing tout en préservant les détails fins. Il est souvent utilisé pour des images présentant à la fois des zones lisses et des détails complexes.
+
+    Premier test avec le filtre de Lanczos
+    

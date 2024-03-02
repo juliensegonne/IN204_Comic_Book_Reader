@@ -1,4 +1,5 @@
 #include "affichage.hpp"
+#include <cmath>
 
 FullScreenLabel::FullScreenLabel(const Book& book, QWidget *parent)
     : QLabel(parent), bookRef(book), currentPageIndex(-1) {
@@ -99,6 +100,52 @@ void FullScreenLabel::keyPressEvent(QKeyEvent *event) [[maybe_unused]] {
     }
 }
 
+
+// filtre de Lanczos
+double lanczos(double x) {
+    if (std::abs(x) < 1e-16) return 1.0;
+    if (std::abs(x) > 3.0) return 0.0;
+    return std::sin(M_PI * x) * std::sin(M_PI * x / 3.0) / (M_PI * M_PI * x * x);
+}
+
+// Redimensionnement image avec le filtre de Lanczos
+QImage resizeWithLanczos(const QImage& image, int newWidth, int newHeight) {
+    QImage resizedImage(newWidth, newHeight, image.format());
+
+    for (int y = 0; y < newHeight; ++y) {
+        for (int x = 0; x < newWidth; ++x) {
+            double srcX = static_cast<double>(x) / newWidth * image.width();
+            double srcY = static_cast<double>(y) / newHeight * image.height();
+
+            double r = 0.0, g = 0.0, b = 0.0;
+            double totalWeight = 0.0;
+
+            for (int j = std::floor(srcY) - 2; j <= std::floor(srcY) + 2; ++j) {
+                for (int i = std::floor(srcX) - 2; i <= std::floor(srcX) + 2; ++i) {
+                    if (i >= 0 && i < image.width() && j >= 0 && j < image.height()) {
+                        double weight = lanczos(srcX - i) * lanczos(srcY - j);
+                        totalWeight += weight;
+
+                        QRgb pixel = image.pixel(i, j);
+                        r += qRed(pixel) * weight;
+                        g += qGreen(pixel) * weight;
+                        b += qBlue(pixel) * weight;
+                    }
+                }
+            }
+
+            r = std::max(0.0, std::min(255.0, r / totalWeight));
+            g = std::max(0.0, std::min(255.0, g / totalWeight));
+            b = std::max(0.0, std::min(255.0, b / totalWeight));
+
+            resizedImage.setPixel(x, y, qRgb(static_cast<int>(r), static_cast<int>(g), static_cast<int>(b)));
+        }
+    }
+
+    return resizedImage;
+}
+
+
 void FullScreenLabel::afficherPageCourante() {
     const auto& pages = bookRef.ObtenirPages();
     // Vérifie que l'indice de page courante ne dépasse pas le nombre total de pages
@@ -133,6 +180,7 @@ void FullScreenLabel::afficherPageCourante() {
 
             // Redimensionner l'image pour qu'elle tienne dans la taille maximale définie
             QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
+            img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
 
             // Dessiner l'image sur la pageImage à la position calculée
             painter.drawImage(QPoint(dim, 0), img.scaled(scaledSize));
