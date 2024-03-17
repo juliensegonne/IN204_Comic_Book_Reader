@@ -57,6 +57,7 @@ public:
     void AjouterPage(const Page& page);
     const std::vector<Page>& ObtenirPages() const;
     TypeArchive ObtenirTypeArchive() const;
+    Book ChargerComicBook(const std::string& cheminImages,int nb_images_par_pages, TypeArchive typeArch);
 };
 
 #endif

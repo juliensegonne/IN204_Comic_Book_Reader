@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = image1.0.0
-DISTDIR = /home/juliensegonne/IN204_Comic_Book_Reader/.tmp/image1.0.0
+DISTDIR = /home/bam/IN204_Comic_Book_Reader/.tmp/image1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) -lMagick++ -lboost_filesystem /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
@@ -136,7 +136,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		scripts/scripts/projet.pro scripts/comic_book.hpp \
+		scripts/projet.pro scripts/comic_book.hpp \
 		scripts/affichage.hpp scripts/main.cpp \
 		scripts/comic_book.cpp \
 		scripts/affichage.cpp
@@ -314,7 +314,7 @@ qmake: FORCE
 qmake_all: FORCE
 
 
-all: Makefile image
+all: clean Makefile image
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -365,7 +365,7 @@ moc_affichage.cpp: scripts/affichage.hpp \
 		scripts/comic_book.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/juliensegonne/IN204_Comic_Book_Reader/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/juliensegonne/IN204_Comic_Book_Reader/scripts -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include scripts/affichage.hpp -o moc_affichage.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/bam/IN204_Comic_Book_Reader/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/bam/IN204_Comic_Book_Reader/scripts -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include scripts/affichage.hpp -o moc_affichage.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:

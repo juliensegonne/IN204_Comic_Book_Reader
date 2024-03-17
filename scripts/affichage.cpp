@@ -1,5 +1,9 @@
 #include "affichage.hpp"
 #include <cmath>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
+
 
 FullScreenLabel::FullScreenLabel(const Book& book, QWidget *parent)
     : QLabel(parent), bookRef(book), currentPageIndex(-1) {
@@ -81,8 +85,46 @@ void FullScreenLabel::AllerDernierePage() {
 }
 
 void FullScreenLabel::ChoixComicBook() {
-    // A compléter
+    int nb_images_par_pages = 2;
+    // Ouvrir une boîte de dialogue pour sélectionner un dossier contenant des comic books
+    QString dossierSelectionne = QFileDialog::getExistingDirectory(this, "Choisir un dossier", "archives/extractions");
+
+    if (!dossierSelectionne.isEmpty()) {
+        // Récupérer les trois derniers caractères du nom du dossier sélectionné et les mettre en majuscules
+        QString typeArchiveString = dossierSelectionne.right(3).toUpper();
+
+        // Convertir la chaîne de caractères en enum TypeArchive
+        TypeArchive typeArchive;
+        if (typeArchiveString == "CBZ") {
+            typeArchive = TypeArchive::CBZ;
+        } else if (typeArchiveString == "CBR") {
+            typeArchive = TypeArchive::CBR;
+        } else if (typeArchiveString == "CB7") {
+            typeArchive = TypeArchive::CB7;
+        } else if (typeArchiveString == "CBT") {
+            typeArchive = TypeArchive::CBT;
+        } else {
+            // Afficher un avertissement si le type d'archive n'est pas reconnu
+            QMessageBox::warning(this, "Type d'archive non reconnu", "Le type d'archive correspondant aux trois derniers caractères du dossier sélectionné n'est pas reconnu.");
+            return;
+        }
+
+        // Crée un nouveau livre à partir du dossier sélectionné
+        Book book(typeArchive, nb_images_par_pages);
+        book = book.ChargerComicBook(dossierSelectionne.toStdString(), nb_images_par_pages, typeArchive);
+
+        // Si le livre chargé est vide, affiche un avertissement
+        if (book.ObtenirPages().empty()) {
+            QMessageBox::warning(this, "Aucune image trouvée", "Aucune image au format JPG ou PNG trouvée dans le dossier sélectionné.");
+            return;
+        }
+
+        // Réinitialiser l'affichage pour montrer la première page
+        currentPageIndex = 0;
+        afficherPageCourante();
+    }
 }
+
 
 void FullScreenLabel::keyPressEvent(QKeyEvent *event) [[maybe_unused]] {
     switch (event->key()) {
@@ -180,7 +222,7 @@ void FullScreenLabel::afficherPageCourante() {
 
             // Redimensionner l'image pour qu'elle tienne dans la taille maximale définie
             QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
-            img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
+            // img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
 
             // Dessiner l'image sur la pageImage à la position calculée
             painter.drawImage(QPoint(dim, 0), img.scaled(scaledSize));
