@@ -5,7 +5,7 @@
 #include <QMessageBox>
 
 
-FullScreenLabel::FullScreenLabel(const Book& book, QWidget *parent)
+FullScreenLabel::FullScreenLabel(Book& book, QWidget *parent)
     : QLabel(parent), bookRef(book), currentPageIndex(-1) {
     // On récupère les dimensions de l'écran
     QScreen *screen = QGuiApplication::primaryScreen();
@@ -71,17 +71,17 @@ void FullScreenLabel::Boutons() {
 void FullScreenLabel::changePage(int delta) [[maybe_unused]] {
     currentPageIndex += delta; // Page actuelle qui doit être affichée
     currentPageIndex = std::max(0, std::min(currentPageIndex, static_cast<int>(bookRef.ObtenirPages().size()) - 1));
-    afficherPageCourante();
+    afficherPageCourante(bookRef);
 }
 
 void FullScreenLabel::AllerPremierePage() {
     currentPageIndex = 0;
-    afficherPageCourante();
+    afficherPageCourante(bookRef);
 }
 
 void FullScreenLabel::AllerDernierePage() {
     currentPageIndex = bookRef.ObtenirPages().size() - 1;
-    afficherPageCourante();
+    afficherPageCourante(bookRef);
 }
 
 void FullScreenLabel::ChoixComicBook() {
@@ -110,18 +110,18 @@ void FullScreenLabel::ChoixComicBook() {
         }
 
         // Crée un nouveau livre à partir du dossier sélectionné
-        Book book(typeArchive, nb_images_par_pages);
-        book = book.ChargerComicBook(dossierSelectionne.toStdString(), nb_images_par_pages, typeArchive);
+        Book bookRef(typeArchive, nb_images_par_pages);
+        bookRef = bookRef.ChargerComicBook(dossierSelectionne.toStdString(), nb_images_par_pages, typeArchive);
 
         // Si le livre chargé est vide, affiche un avertissement
-        if (book.ObtenirPages().empty()) {
+        if (bookRef.ObtenirPages().empty()) {
             QMessageBox::warning(this, "Aucune image trouvée", "Aucune image au format JPG ou PNG trouvée dans le dossier sélectionné.");
             return;
         }
 
         // Réinitialiser l'affichage pour montrer la première page
         currentPageIndex = 0;
-        afficherPageCourante();
+        afficherPageCourante(bookRef);
     }
 }
 
@@ -188,7 +188,7 @@ QImage resizeWithLanczos(const QImage& image, int newWidth, int newHeight) {
 }
 
 
-void FullScreenLabel::afficherPageCourante() {
+void FullScreenLabel::afficherPageCourante(Book& bookRef) {
     const auto& pages = bookRef.ObtenirPages();
     // Vérifie que l'indice de page courante ne dépasse pas le nombre total de pages
     if (currentPageIndex < static_cast<int>(pages.size())) {
@@ -222,7 +222,7 @@ void FullScreenLabel::afficherPageCourante() {
 
             // Redimensionner l'image pour qu'elle tienne dans la taille maximale définie
             QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
-            // img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
+            //img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
 
             // Dessiner l'image sur la pageImage à la position calculée
             painter.drawImage(QPoint(dim, 0), img.scaled(scaledSize));
@@ -236,3 +236,4 @@ void FullScreenLabel::afficherPageCourante() {
         setPixmap(pagePixmap);
     }
 }
+

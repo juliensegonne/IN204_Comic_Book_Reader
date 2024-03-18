@@ -15,7 +15,7 @@ class FullScreenLabel : public QLabel {
 
 private:
     int currentPageIndex;
-    const Book& bookRef;
+    Book& bookRef;
     QPushButton *BoutonPremierePage;
     QPushButton *BoutonPagePrecedente;
     QPushButton *BoutonPageSuivante;
@@ -24,7 +24,7 @@ private:
     QSize maxImageSize;
 
 public:
-    FullScreenLabel(const Book& book, QWidget *parent = nullptr);
+    FullScreenLabel(Book& book, QWidget *parent = nullptr);
     void Boutons();
     void changePage(int delta);
     void AllerPremierePage();
@@ -33,7 +33,7 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override [[maybe_unused]];
-    void afficherPageCourante();
+    void afficherPageCourante(Book& bookRef);
 
 };
 
