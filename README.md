@@ -16,28 +16,14 @@ This project is a Comic Book Reader coded in C++ with the use of the Qt library.
 
 - **Different Reading Modes**: You can choose between different reading modes to adapt the reading experience to your preferences, including single-page or double-page reading mode.
 
-## Usage
 
-1. Launch the Comic Book Reader application.
-2. Load a comic using the load option in the menu or by dragging and dropping a file onto the interface.
-3. Navigate through pages using navigation buttons or keyboard shortcuts.
-4. Use the zoom feature to view page details.
-5. Enjoy your reading!
+## Compiling
 
-## Contributing
+- To compile without errors, please update the absolute paths in the Makefile on lines 40 and 371.
+- Run make in the main directory
 
-Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a pull request
 
 ## Authors
 
-- [Your Name](link_to_your_github_profile) - Lead Developer
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Baptiste Montagnes
+- Julien Segonne
