@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 // Enumération pour les types d'archive
 enum class TypeArchive {
@@ -50,14 +51,17 @@ private:
     std::vector<Page> pages;
     TypeArchive typeArch;
     int imagesParPage;
+    std::string cheminImages;
 
 public:
-    Book(TypeArchive typeArch,int imagesParPage);
+    Book(TypeArchive typeArch, int imagesParPage, const std::string& cheminImages);
     int ObtenirImagesParPage() const;
     void AjouterPage(const Page& page);
     const std::vector<Page>& ObtenirPages() const;
     TypeArchive ObtenirTypeArchive() const;
     Book ChargerComicBook(const std::string& cheminImages,int nb_images_par_pages, TypeArchive typeArch);
+    void ChangerNombreImagesParPage(int nombreImagesParPage);
+    const std::string& ObtenirCheminImages() const;
 };
 
 #endif

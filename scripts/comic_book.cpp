@@ -51,8 +51,8 @@ const std::vector<Image>& Page::ObtenirImages() const {
     return images;
 }
 
-Book::Book(TypeArchive typeArch, int imagesParPage)
-    : typeArch(typeArch), imagesParPage(imagesParPage) {}
+Book::Book(TypeArchive typeArch, int imagesParPage, const std::string& cheminImages)
+    : typeArch(typeArch), imagesParPage(imagesParPage), cheminImages(cheminImages) {}
 
 int Book::ObtenirImagesParPage() const { 
     return imagesParPage; 
@@ -72,7 +72,7 @@ TypeArchive Book::ObtenirTypeArchive() const {
 
 Book Book::ChargerComicBook(const std::string& cheminImages,int nb_images_par_pages, TypeArchive typeArch) {
     // Initialisation du book avec le bon nombre d'images par page
-    Book book(typeArch, nb_images_par_pages);
+    Book book(typeArch, nb_images_par_pages, cheminImages);
 
     // Pour stocker les noms des images
     std::vector<std::string> nomsImages;
@@ -91,7 +91,6 @@ Book Book::ChargerComicBook(const std::string& cheminImages,int nb_images_par_pa
     // Ajouter les images stockées dans le book
     for (const auto& nomFichier : nomsImages) {
         Image nouvelleImage(nomFichier);
-
         // Si il n'y aucune page de définie
         if (book.ObtenirPages().empty()) {
             Page nouvellePage;
@@ -111,4 +110,12 @@ Book Book::ChargerComicBook(const std::string& cheminImages,int nb_images_par_pa
         }
     }
     return book;
+}
+
+void Book::ChangerNombreImagesParPage(int nombreImagesParPage) {
+    imagesParPage = nombreImagesParPage;
+}
+
+const std::string& Book::ObtenirCheminImages() const {
+    return cheminImages; 
 }

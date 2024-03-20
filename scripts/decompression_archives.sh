@@ -1,6 +1,6 @@
 #!/bin/bash
-cd ..
 cd archives 
+rm -r extractions
 mkdir extractions #contiendra tous les fichiers extraits des archives
 
 # Renomme tous les fichiers .cbz en fichiers .zip

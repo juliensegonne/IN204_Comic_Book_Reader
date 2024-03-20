@@ -9,6 +9,13 @@
 #include <QScreen>
 #include <QGuiApplication>
 #include "comic_book.hpp"
+#include <thread>
+
+enum class FiltreChoisi {
+    AucunFiltre,
+    FiltreBilineaire,
+    FiltreConvolution
+};
 
 class FullScreenLabel : public QLabel {
     Q_OBJECT
@@ -16,11 +23,14 @@ class FullScreenLabel : public QLabel {
 private:
     int currentPageIndex;
     Book& bookRef;
+    FiltreChoisi filtreActuel;
     QPushButton *BoutonPremierePage;
     QPushButton *BoutonPagePrecedente;
     QPushButton *BoutonPageSuivante;
     QPushButton *BoutonDernierePage;
     QPushButton *BoutonChoixComic;
+    QPushButton* BoutonChoixFiltre; 
+    QPushButton* BoutonChangerNombreImagesParPage;
     QSize maxImageSize;
 
 public:
@@ -30,10 +40,13 @@ public:
     void AllerPremierePage();
     void AllerDernierePage();
     void ChoixComicBook();
+    void ChoixFiltre();
+    void ChangerNombreImagesParPage();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override [[maybe_unused]];
-    void afficherPageCourante(Book& bookRef);
+    void mousePressEvent(QMouseEvent *event);
+    void afficherPageCourante();
 
 };
 

@@ -1,0 +1,4 @@
+*.bmp filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+/archives/True_Comic_bmp_cbr.cbr filter=lfs diff=lfs merge=lfs -text
+/archives/True_Comic_png_cbr.cbr filter=lfs diff=lfs merge=lfs -text

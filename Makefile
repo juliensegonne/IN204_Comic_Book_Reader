@@ -314,7 +314,10 @@ qmake: FORCE
 qmake_all: FORCE
 
 
-all: clean Makefile image
+all: clean decompress Makefile image
+
+decompress : 
+	bash scripts/decompression_archives.sh
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -332,6 +335,9 @@ clean: compiler_clean
 	-$(DEL_FILE) result.jpg
 	-$(DEL_FILE) sortie.jpg
 	-$(DEL_FILE) *~ core *.core
+	rm -r archives/extractions
+	rm archives/*.rar
+	rm archives/*.zip
 
 
 distclean: clean 
