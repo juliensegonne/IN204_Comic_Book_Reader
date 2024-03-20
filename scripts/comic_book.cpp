@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <boost/filesystem.hpp>
 #include <QFileDialog>
+#include <iostream>
 
 namespace fs = std::filesystem;
 
@@ -87,7 +88,6 @@ Book Book::ChargerComicBook(const std::string& cheminImages,int nb_images_par_pa
 
     // Tri des noms des images par ordre alphabétique
     std::sort(nomsImages.begin(), nomsImages.end());
-
     // Ajouter les images stockées dans le book
     for (const auto& nomFichier : nomsImages) {
         Image nouvelleImage(nomFichier);

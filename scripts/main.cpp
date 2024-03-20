@@ -20,7 +20,7 @@ void loadImagesAsync(const std::string& inputFolder, const TypeArchive type, int
 
 int main(int argc, char *argv[]) {
     // Paramètres pour le chargement des images
-    std::string inputFolder = "archives/extractions/extraction_archive_jpg_cbr/";
+    std::string inputFolder = "archives/extractions/extraction_True_Comic_png_cbr/";
     TypeArchive type = TypeArchive::CBZ;
     int nb_images_par_pages = 1;
     Book book(type, nb_images_par_pages,inputFolder);

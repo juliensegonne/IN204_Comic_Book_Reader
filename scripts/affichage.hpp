@@ -8,13 +8,14 @@
 #include <QPainter>
 #include <QScreen>
 #include <QGuiApplication>
+#include <QGraphicsView>
 #include "comic_book.hpp"
-#include <thread>
 
 enum class FiltreChoisi {
     AucunFiltre,
     FiltreBilineaire,
-    FiltreConvolution
+    FiltreConvolution,
+    FiltreLanczos
 };
 
 class FullScreenLabel : public QLabel {
@@ -42,12 +43,18 @@ public:
     void ChoixComicBook();
     void ChoixFiltre();
     void ChangerNombreImagesParPage();
+    // QImage zoomImage(const QImage& image, qreal scaleFactor);
+    // void zoom_fct(qreal zoomFactor);
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override [[maybe_unused]];
+    void keyPressEvent(QKeyEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void EvenementMolette(QWheelEvent  *event);
     void afficherPageCourante();
-
 };
+
+QImage FiltreLanczos(const QImage& image, int newWidth, int newHeight);
+QImage FiltreBilinear(const QImage& image, int newWidth, int newHeight);
+QImage FiltreConvolution(const QImage& image, int newWidth, int newHeight);
 
 #endif // AFFICHAGE_HPP

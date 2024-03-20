@@ -147,11 +147,10 @@ void FullScreenLabel::ChoixComicBook() {
         }
 
         // Crée un nouveau livre à partir du dossier sélectionné
-        bookRef = bookRef.ChargerComicBook(bookRef.ObtenirCheminImages(), nb_images_par_pages, typeArchive);
-
+        bookRef = bookRef.ChargerComicBook(dossierSelectionne.toStdString(), nb_images_par_pages, typeArchive);
         // Si le livre chargé est vide, affiche un avertissement
         if (bookRef.ObtenirPages().empty()) {
-            QMessageBox::warning(this, "Aucune image trouvée", "Aucune image au format JPG ou PNG trouvée dans le dossier sélectionné.");
+            QMessageBox::warning(this, "Aucune image trouvée", "Aucune image au format trouvée dans le dossier sélectionné.");
             return;
         }
 
@@ -165,7 +164,7 @@ void FullScreenLabel::ChoixComicBook() {
 void FullScreenLabel::ChoixFiltre() {
     // Ouvrir une boîte de dialogue pour permettre à l'utilisateur de choisir le filtre
     QStringList choixFiltres;
-    choixFiltres << "Aucun Filtre" << "Filtre adapté au texte" << "Filtre adapté aux images"; // Liste des filtres disponibles, à remplacer par vos choix
+    choixFiltres << "Aucun Filtre" << "Filtre adapté au texte" << "Filtre adapté aux images" << "Filtre Lanczos"; // Liste des filtres disponibles, à remplacer par vos choix
     QString choix = QInputDialog::getItem(this, "Choisir un filtre", "Filtre :", choixFiltres, 0, false);
 
     // Mettre à jour le filtre actuel en fonction du choix de l'utilisateur
@@ -175,6 +174,8 @@ void FullScreenLabel::ChoixFiltre() {
         filtreActuel = FiltreChoisi::FiltreBilineaire;
     } else if (choix == "Filtre adapté aux images") {
         filtreActuel = FiltreChoisi::FiltreConvolution;
+    } else if (choix == "Filtre Lanczos") {
+        filtreActuel = FiltreChoisi::FiltreLanczos;
     } 
     // Actualiser l'affichage avec le nouveau filtre choisi
     afficherPageCourante();
@@ -198,6 +199,69 @@ void FullScreenLabel::ChangerNombreImagesParPage() {
     setFocus();
 }
 
+// QImage FullScreenLabel::zoomImage(const QImage& image, qreal scaleFactor) {
+//     // Crée une nouvelle QImage pour stocker l'image zoomée
+//     QImage zoomed(image.size() * scaleFactor, QImage::Format_RGB32);
+//     // Initialise un QPainter pour dessiner sur l'image zoomée
+//     QPainter painter(&zoomed);
+//     // Effectue la transformation de zoom sur l'image originale
+//     painter.scale(scaleFactor, scaleFactor);
+//     // Dessine l'image originale sur l'image zoomée
+//     painter.drawImage(0, 0, image);
+//     return zoomed;
+// }
+
+// void FullScreenLabel::zoom_fct(qreal zoomFactor) {
+//     const auto& pages = bookRef.ObtenirPages();
+//     // Vérifie que l'indice de page courante ne dépasse pas le nombre total de pages
+//     if (currentPageIndex < static_cast<int>(pages.size())) {
+//         // Récupère les informations de la page à afficher
+//         const auto& page = pages[currentPageIndex];
+//         const auto& images = page.ObtenirImages();
+//         QPixmap pagePixmap;
+
+//         // Créer une image vide pour la page
+//         QImage pageImage(size(), QImage::Format_RGB32);
+//         QPainter painter(&pageImage);
+
+//         // Réinitialiser le fond de l'image en blanc pour ne plus afficher l'image précédente
+//         painter.fillRect(pageImage.rect(), Qt::white);
+
+//         // Calculer la largeur totale des images
+//         int totalImageWidth = 0;
+//         for (const auto& image : images) {
+//             QImage img(QString::fromStdString(image.ObtenirNomFichier()));
+//             QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
+//             totalImageWidth += scaledSize.width();
+//         }
+
+//         // Calculer la position x pour centrer les images
+//         int dim = (pageImage.width() - totalImageWidth) / 2;
+
+//         // Afficher les images de la page actuelle
+//         for (const auto& image : images) {
+//             // Charger l'image
+//             QImage img(QString::fromStdString(image.ObtenirNomFichier()));
+
+//             // Redimensionner l'image pour qu'elle tienne dans la taille maximale définie
+//             QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
+//             // img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
+
+//             // Dessiner l'image sur la pageImage à la position calculée
+//             painter.drawImage(QPoint(dim, 0), img.scaled(scaledSize));
+
+//             // Mettre à jour la position horizontale pour la prochaine image
+//             dim += scaledSize.width();
+//         }
+
+//         // Appliquer le zoom sur une copie de l'image originale
+//         QImage zoomedPageImage = zoomImage(pageImage, zoomFactor);
+
+//         // Convertir l'image en QPixmap et l'afficher
+//         pagePixmap = QPixmap::fromImage(zoomedPageImage);
+//         setPixmap(pagePixmap);
+//     }
+// }
 
 void FullScreenLabel::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
@@ -235,6 +299,16 @@ void FullScreenLabel::mousePressEvent(QMouseEvent *event) {
     }
 }
 
+void FullScreenLabel::EvenementMolette(QWheelEvent  *event) {
+    // Vérifier si la souris est au-dessus de la zone d'affichage
+    if (rect().contains(event->position().toPoint())) {
+        // Récupérer le facteur de zoom en fonction du déplacement de la molette
+        double zoomFactor = (event->angleDelta().y() > 0) ? 1.1 : 1/1.1;
+        // zoom_fct(zoomFactor);
+        std::cout << "Mon zoom =" << zoomFactor << std::endl;
+    }
+}
+
 // filtre de Lanczos
 double lanczos(double x) {
     if (std::abs(x) < 1e-16) return 1.0;
@@ -243,7 +317,7 @@ double lanczos(double x) {
 }
 
 // Redimensionnement image avec le filtre de Lanczos
-QImage resizeWithLanczos(const QImage& image, int newWidth, int newHeight) {
+QImage FiltreLanczos(const QImage& image, int newWidth, int newHeight) {
     QImage resizedImage(newWidth, newHeight, image.format());
 
     for (int y = 0; y < newHeight; ++y) {
@@ -280,7 +354,7 @@ QImage resizeWithLanczos(const QImage& image, int newWidth, int newHeight) {
 }
 
 // Redimensionnement image avec interpolation bilinéaire
-QImage resizeWithBilinear(const QImage& image, int newWidth, int newHeight) {
+QImage FiltreBilinear(const QImage& image, int newWidth, int newHeight) {
     QImage resizedImage(newWidth, newHeight, image.format());
 
     // Facteurs de conversion entre les dimensions de l'image originale et de la nouvelle image
@@ -331,7 +405,7 @@ QImage resizeWithBilinear(const QImage& image, int newWidth, int newHeight) {
 }
 
 // Redimensionnement image avec un filtre de convolution pour améliorer la qualité
-QImage resizeWithConvolutionFilter(const QImage& image, int newWidth, int newHeight) {
+QImage FiltreConvolution(const QImage& image, int newWidth, int newHeight) {
     // Matrice de convolution pour le lissage
     static const std::vector<std::vector<double>> convolutionMatrix = {
         {1.0 / 16, 2.0 / 16, 1.0 / 16},
@@ -407,9 +481,11 @@ void FullScreenLabel::afficherPageCourante() {
             if (filtreActuel == FiltreChoisi::AucunFiltre) {
                 img = img.scaled(scaledSize);
             } else if (filtreActuel == FiltreChoisi::FiltreBilineaire) {
-                img = resizeWithBilinear(img, scaledSize.width(), scaledSize.height());
+                img = FiltreBilinear(img, scaledSize.width(), scaledSize.height());
             } else if (filtreActuel == FiltreChoisi::FiltreConvolution) {
-                img = resizeWithConvolutionFilter(img, scaledSize.width(), scaledSize.height());
+                img = FiltreConvolution(img, scaledSize.width(), scaledSize.height());
+            } else if (filtreActuel == FiltreChoisi::FiltreLanczos) {
+                img = FiltreLanczos(img, scaledSize.width(), scaledSize.height());
             }
             // Dessiner l'image sur la pageImage à la position calculée
             painter.drawImage(QPoint(dim, 0), img.scaled(scaledSize));
