@@ -20,7 +20,7 @@ This project is a Comic Book Reader coded in C++ with the use of the Qt library.
 ## Compiling
 
 - To compile without errors, please update the absolute paths in the Makefile on lines 40 and 371.
-- Run make in the main directory
+- Run 'make' in the main directory
 
 
 ## Authors
