@@ -145,9 +145,9 @@ void FullScreenLabel::ChoixComicBook() {
             QMessageBox::warning(this, "Type d'archive non reconnu", "Le type d'archive correspondant aux trois derniers caractères du dossier sélectionné n'est pas reconnu.");
             return;
         }
-
+        std::atomic<bool> imageLoaded(false);
         // Crée un nouveau livre à partir du dossier sélectionné
-        bookRef = bookRef.ChargerComicBook(dossierSelectionne.toStdString(), nb_images_par_pages, typeArchive);
+        ChargementAsynchrone(dossierSelectionne.toStdString(), typeArchive, nb_images_par_pages, std::ref(bookRef),std::ref(imageLoaded));
         // Si le livre chargé est vide, affiche un avertissement
         if (bookRef.ObtenirPages().empty()) {
             QMessageBox::warning(this, "Aucune image trouvée", "Aucune image au format trouvée dans le dossier sélectionné.");
