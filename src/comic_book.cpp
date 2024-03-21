@@ -119,3 +119,14 @@ void Book::ChangerNombreImagesParPage(int nombreImagesParPage) {
 const std::string& Book::ObtenirCheminImages() const {
     return cheminImages; 
 }
+
+void ChargementAsynchrone(const std::string& inputFolder, const TypeArchive type, int nb_images_par_pages, Book& book, std::atomic<bool>& imageLoaded) {
+    try {
+        // Charger les images depuis inputFolder
+        book = book.ChargerComicBook(inputFolder, nb_images_par_pages, type);
+        std::cout << "Chargement des images terminé." << std::endl;
+        imageLoaded.store(true); // Indiquer que l'image est chargée
+    } catch (const std::exception& e) {
+        std::cerr << "Erreur lors du chargement des images : " << e.what() << std::endl;
+    }
+}
