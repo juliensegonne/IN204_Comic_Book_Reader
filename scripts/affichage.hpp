@@ -1,6 +1,11 @@
 #ifndef AFFICHAGE_HPP
 #define AFFICHAGE_HPP
 
+#include <iostream>
+#include <cmath>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QWidget>
 #include <QLabel>
 #include <QPushButton>
@@ -33,6 +38,7 @@ private:
     QPushButton* BoutonChoixFiltre; 
     QPushButton* BoutonChangerNombreImagesParPage;
     QSize maxImageSize;
+    void zoom_fct(qreal scaleFactor);
 
 public:
     FullScreenLabel(Book& book, QWidget *parent = nullptr);
@@ -43,13 +49,12 @@ public:
     void ChoixComicBook();
     void ChoixFiltre();
     void ChangerNombreImagesParPage();
-    // QImage zoomImage(const QImage& image, qreal scaleFactor);
-    // void zoom_fct(qreal zoomFactor);
+    QImage zoomImage(const QImage& image, qreal scaleFactor);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
     void mousePressEvent(QMouseEvent *event);
-    void EvenementMolette(QWheelEvent  *event);
+    void EvenementMolette(QWheelEvent *event);
     void afficherPageCourante();
 };
 

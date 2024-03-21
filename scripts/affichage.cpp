@@ -1,9 +1,5 @@
 #include "affichage.hpp"
-#include <cmath>
-#include <QFileDialog>
-#include <QInputDialog>
-#include <QMessageBox>
-#include <iostream>
+
 
 FullScreenLabel::FullScreenLabel(Book& book, QWidget *parent)
     : QLabel(parent), bookRef(book), currentPageIndex(-1) {
@@ -199,69 +195,69 @@ void FullScreenLabel::ChangerNombreImagesParPage() {
     setFocus();
 }
 
-// QImage FullScreenLabel::zoomImage(const QImage& image, qreal scaleFactor) {
-//     // Crée une nouvelle QImage pour stocker l'image zoomée
-//     QImage zoomed(image.size() * scaleFactor, QImage::Format_RGB32);
-//     // Initialise un QPainter pour dessiner sur l'image zoomée
-//     QPainter painter(&zoomed);
-//     // Effectue la transformation de zoom sur l'image originale
-//     painter.scale(scaleFactor, scaleFactor);
-//     // Dessine l'image originale sur l'image zoomée
-//     painter.drawImage(0, 0, image);
-//     return zoomed;
-// }
+QImage FullScreenLabel::zoomImage(const QImage& image, qreal scaleFactor) {
+    // Crée une nouvelle QImage pour stocker l'image zoomée
+    QImage zoomed(image.size() * scaleFactor, QImage::Format_RGB32);
+    // Initialise un QPainter pour dessiner sur l'image zoomée
+    QPainter painter(&zoomed);
+    // Effectue la transformation de zoom sur l'image originale
+    painter.scale(scaleFactor, scaleFactor);
+    // Dessine l'image originale sur l'image zoomée
+    painter.drawImage(0, 0, image);
+    return zoomed;
+}
 
-// void FullScreenLabel::zoom_fct(qreal zoomFactor) {
-//     const auto& pages = bookRef.ObtenirPages();
-//     // Vérifie que l'indice de page courante ne dépasse pas le nombre total de pages
-//     if (currentPageIndex < static_cast<int>(pages.size())) {
-//         // Récupère les informations de la page à afficher
-//         const auto& page = pages[currentPageIndex];
-//         const auto& images = page.ObtenirImages();
-//         QPixmap pagePixmap;
+void FullScreenLabel::zoom_fct(qreal zoomFactor) {
+    const auto& pages = bookRef.ObtenirPages();
+    // Vérifie que l'indice de page courante ne dépasse pas le nombre total de pages
+    if (currentPageIndex < static_cast<int>(pages.size())) {
+        // Récupère les informations de la page à afficher
+        const auto& page = pages[currentPageIndex];
+        const auto& images = page.ObtenirImages();
+        QPixmap pagePixmap;
 
-//         // Créer une image vide pour la page
-//         QImage pageImage(size(), QImage::Format_RGB32);
-//         QPainter painter(&pageImage);
+        // Créer une image vide pour la page
+        QImage pageImage(size(), QImage::Format_RGB32);
+        QPainter painter(&pageImage);
 
-//         // Réinitialiser le fond de l'image en blanc pour ne plus afficher l'image précédente
-//         painter.fillRect(pageImage.rect(), Qt::white);
+        // Réinitialiser le fond de l'image en blanc pour ne plus afficher l'image précédente
+        painter.fillRect(pageImage.rect(), Qt::white);
 
-//         // Calculer la largeur totale des images
-//         int totalImageWidth = 0;
-//         for (const auto& image : images) {
-//             QImage img(QString::fromStdString(image.ObtenirNomFichier()));
-//             QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
-//             totalImageWidth += scaledSize.width();
-//         }
+        // Calculer la largeur totale des images
+        int totalImageWidth = 0;
+        for (const auto& image : images) {
+            QImage img(QString::fromStdString(image.ObtenirNomFichier()));
+            QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
+            totalImageWidth += scaledSize.width();
+        }
 
-//         // Calculer la position x pour centrer les images
-//         int dim = (pageImage.width() - totalImageWidth) / 2;
+        // Calculer la position x pour centrer les images
+        int dim = (pageImage.width() - totalImageWidth) / 2;
 
-//         // Afficher les images de la page actuelle
-//         for (const auto& image : images) {
-//             // Charger l'image
-//             QImage img(QString::fromStdString(image.ObtenirNomFichier()));
+        // Afficher les images de la page actuelle
+        for (const auto& image : images) {
+            // Charger l'image
+            QImage img(QString::fromStdString(image.ObtenirNomFichier()));
 
-//             // Redimensionner l'image pour qu'elle tienne dans la taille maximale définie
-//             QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
-//             // img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
+            // Redimensionner l'image pour qu'elle tienne dans la taille maximale définie
+            QSize scaledSize = img.size().scaled(maxImageSize, Qt::KeepAspectRatio);
+            // img = resizeWithLanczos(img, scaledSize.width(), scaledSize.height());
 
-//             // Dessiner l'image sur la pageImage à la position calculée
-//             painter.drawImage(QPoint(dim, 0), img.scaled(scaledSize));
+            // Dessiner l'image sur la pageImage à la position calculée
+            painter.drawImage(QPoint(dim, 0), img.scaled(scaledSize));
 
-//             // Mettre à jour la position horizontale pour la prochaine image
-//             dim += scaledSize.width();
-//         }
+            // Mettre à jour la position horizontale pour la prochaine image
+            dim += scaledSize.width();
+        }
 
-//         // Appliquer le zoom sur une copie de l'image originale
-//         QImage zoomedPageImage = zoomImage(pageImage, zoomFactor);
+        // Appliquer le zoom sur une copie de l'image originale
+        QImage zoomedPageImage = zoomImage(pageImage, zoomFactor);
 
-//         // Convertir l'image en QPixmap et l'afficher
-//         pagePixmap = QPixmap::fromImage(zoomedPageImage);
-//         setPixmap(pagePixmap);
-//     }
-// }
+        // Convertir l'image en QPixmap et l'afficher
+        pagePixmap = QPixmap::fromImage(zoomedPageImage);
+        setPixmap(pagePixmap);
+    }
+}
 
 void FullScreenLabel::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
@@ -301,11 +297,12 @@ void FullScreenLabel::mousePressEvent(QMouseEvent *event) {
 
 void FullScreenLabel::EvenementMolette(QWheelEvent  *event) {
     // Vérifier si la souris est au-dessus de la zone d'affichage
+    std::cout << "ppppp" << std::endl;
     if (rect().contains(event->position().toPoint())) {
         // Récupérer le facteur de zoom en fonction du déplacement de la molette
         double zoomFactor = (event->angleDelta().y() > 0) ? 1.1 : 1/1.1;
-        // zoom_fct(zoomFactor);
-        std::cout << "Mon zoom =" << zoomFactor << std::endl;
+        std::cout << "La valeur de maVariable est : " << zoomFactor << std::endl;
+        zoom_fct(zoomFactor);
     }
 }
 
