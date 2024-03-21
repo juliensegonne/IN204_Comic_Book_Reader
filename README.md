@@ -11,15 +11,13 @@ This project is a Comic Book Reader coded in C++ with the library. It allows rea
 
 ## Features
 
-- **Comic Loading**: The application supports cbz, cbr, cbt, and cb7 file formats. You can easily load your favorite comic books from your file system.
-
 - **Page Display**: Comic book pages are displayed with a layout optimized for the screen, providing a smooth reading experience.
 
 - **Page Navigation**: You can easily move from one page to another using navigation buttons or keyboard shortcuts.
 
-- **Zoom**: The application supports zooming to allow users to view page details accurately.
+- **Zoom**: The application supports zooming to allow users to view page details accurately with the mouse wheel.
 
-- **Different Reading Modes**: You can choose between different reading modes to adapt the reading experience to your preferences, including single-page or double-page reading mode.
+- **Different Reading Modes**: You can choose between different reading modes to adapt the reading experience to your preferences,single-page or double-page reading mode, filter for images, texts or no filter.
 
 
 ## Compiling
