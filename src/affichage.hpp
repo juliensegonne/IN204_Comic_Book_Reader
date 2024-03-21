@@ -59,3 +59,4 @@ QImage FiltreBilinear(const QImage& image, int newWidth, int newHeight);
 QImage FiltreConvolution(const QImage& image, int newWidth, int newHeight);
 
 #endif // AFFICHAGE_HPP
+s
