@@ -6,7 +6,7 @@ This project is a Comic Book Reader coded in C++ with the library. It allows rea
 
 ## Aim
 
-![UML diagram](../diagram.png)
+![UML diagram](diagram.jpeg)
 
 
 ## Features
