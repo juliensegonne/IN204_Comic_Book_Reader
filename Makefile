@@ -314,7 +314,13 @@ qmake: FORCE
 qmake_all: FORCE
 
 
-all: Makefile comic_book_reader
+all: decompress Makefile comic_book_reader clean
+
+decompress: 
+	bash src/decompression_archives.sh
+
+desarchive:
+	bash src/suppression_fichiers_temporaires.sh
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -330,7 +336,9 @@ distdir: FORCE
 clean: compiler_clean 
 	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
-
+	
+archives:
+	bash src/suppression_fichiers_temporaires.sh
 
 distclean: clean 
 	-$(DEL_FILE) $(TARGET) 
@@ -402,4 +410,3 @@ install:  FORCE
 uninstall:  FORCE
 
 FORCE:
-
