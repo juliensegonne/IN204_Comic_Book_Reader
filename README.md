@@ -2,7 +2,12 @@
 
 # Comic Book Reader
 
-This project is a Comic Book Reader coded in C++ with the use of the Qt library. It allows reading and navigating through digital comic books in various file formats, including cbz, cbr, cbt, and cb7. The application offers several features for a comfortable reading experience.
+This project is a Comic Book Reader coded in C++ with the library. It allows reading and navigating through digital comic books in various file formats (cbz, cbr, cbt, and cb7), it supports the following image formats: PNG, JPG, and BMP. The application offers several features for a comfortable reading experience.
+
+## Aim
+
+![UML diagram](../diagram.png)
+
 
 ## Features
 
@@ -21,6 +26,7 @@ This project is a Comic Book Reader coded in C++ with the use of the Qt library.
 
 - To compile without errors, please update the absolute paths in the Makefile on lines 40 and 371.
 - Run 'make' in the main directory
+- Execute the comic_book_reader file
 
 
 ## Authors
