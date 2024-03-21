@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = comic_book_reader1.0.0
-DISTDIR = /home/bam/IN204_Comic_Book_Reader/.tmp/comic_book_reader1.0.0
+DISTDIR = /home/juliensegonne/last_project/IN204_Comic_Book_Reader/.tmp/comic_book_reader1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) -lMagick++ -lboost_filesystem /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
@@ -314,10 +314,7 @@ qmake: FORCE
 qmake_all: FORCE
 
 
-all: decompress Makefile comic_book_reader clean
-
-decompress: 
-	bash src/decompression_archives.sh
+all: Makefile comic_book_reader
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
@@ -333,7 +330,7 @@ distdir: FORCE
 clean: compiler_clean 
 	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
-	bash src/suppression_fichiers_temporaires.sh
+
 
 distclean: clean 
 	-$(DEL_FILE) $(TARGET) 
@@ -366,7 +363,7 @@ moc_affichage.cpp: src/affichage.hpp \
 		src/comic_book.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/bam/IN204_Comic_Book_Reader/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/bam/IN204_Comic_Book_Reader/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include src/affichage.hpp -o moc_affichage.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/juliensegonne/last_project/IN204_Comic_Book_Reader/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/juliensegonne/last_project/IN204_Comic_Book_Reader/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include src/affichage.hpp -o moc_affichage.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
