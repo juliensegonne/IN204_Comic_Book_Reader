@@ -64,4 +64,5 @@ public:
     const std::string& ObtenirCheminImages() const;
 };
 
+void ChargementAsynchrone(const std::string& inputFolder, const TypeArchive type, int nb_images_par_pages, Book& book, std::atomic<bool>& imageLoaded);
 #endif
